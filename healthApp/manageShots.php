@@ -1,21 +1,25 @@
 <!DOCTYPE html>
 <html style="scroll-behavior:smooth !important" lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta property="og:image" content="https://sitesappsimages.com/assets/images/thumb.png" />
 <meta http-equiv='cache-control' content='no-cache'>
 <meta http-equiv='expires' content='0'>
 <meta http-equiv='pragma' content='no-cache'>
-<link rel="icon" type="image/png" href="https://sitesappsimages.com/doggiehugs/assets/icons/mini_logo_cc.png">
-<!-- USING BOOTSTRAP 4-->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-<link rel="icon" type="image/png" href="icon.png">
-<!-- THESE ARE FOR JQUERY MOBILE  / NOT RUNNING
-<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
-<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
-<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>-->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+<script>
+tinymce.init({
+selector: '.mytextarea'
+});
+</script>
 <style>
 html, body {
 	font-family: Montserrat, sans-serif;
@@ -69,13 +73,6 @@ section {
 	color:#000;
 	font-family: Montserrat, sans-serif;
 	}
-
-input {
-	font-family: Montserrat, sans-serif;
-	font-size:2em;
-	padding:12px;
-	}
-
 
 h3 {
 	color:#000;
@@ -171,22 +168,31 @@ table {
 	margin:auto;
 	justify-content:center;
 }
-
-.addSpace {
-	padding-top:14px;
-}
 </style>
 
 </head>
 
 <body>
+<?php
+include('ff_connect.php');
+if($_POST['submit1']){
+//var_dump($_POST);
+//die;
+$dogID=$_POST['dogID'];
 
-<!-- BOOTSTRAP4 UI CLASSES / INCORP HERE LAST -->
+//$prescribedBy=$_POST['prescribedBy'];
+//$dosage=$_POST['dosage'];
+//$dosageInterval=$_POST['dosageInterval'];
+//$givenBy=$_POST['givenBy'];
+//$lastTimeGiven=$_POST['lastTimeGiven'];
+$medication=$_POST['medication'];
+}
+?>
+<div class="container-fluid">
 <?php
 include('healthNav.php');
 ?>
 
-<!-- APP DESCRIPTION/FAST FRIENDS/MEDICAL ALERT-->
 
 <!--This app will maintain an accurate and timely status on the health and
 well-being of the kennel population, provide a medical alert for each dog as necessary, and
@@ -195,40 +201,47 @@ personnel to get an immediate, up-to-date status on the welfare of an individual
 of the entire kennel population.</p>-->
 
 
+	<div class="container">
+	<form method="post" action="<?php echo $PHP_SELF; ?>" name="addMedForm" >
 
-<?php
-include('ff_connect.php');
-?>
+	<!--Select dog from Dogs where ID=Id-->
 
-<div class="container-fluid">
-<div class="addSpace"></div>
-<div class="d-flex col-12 justify-content-center">
+	<p class="lead">Vaccinations Management</p>
+
+			<div class="col-sm-12 center"><p class="para">Select Patient:    <select name="dogID"><option selected>Select One</option></div>
 
 
+			<!--<option value="1">Fido</option>-->
+			<?php
+			$res = $mysqli->query("select * from ff_healthapp order by id");
 
-	<form method="post" action="healthApp.php" id="authentMe">
-	<div style="padding:16px;background:#dfece7;" class="table">
-			<div class="row">
-				<div class="col">Email</div><div class="col"><input class="form-control" type="text" name="signinName" style="min-width:15em;width:15em;max-width:15em;" value="<?php echo $signinName; ?>" /></div>
-			</div>
-			<div style="padding-top:4px;" class="row">
-				<div class="col">Password</div><div class="col"><input class="form-control" type="text" name="signinPass" style="min-width:15em;width:15em;max-width:15em;" value="<?php echo $signinPass; ?>" /></div>
-			</div>
-		</div>
-			<div style="padding-top:4px;" class="table">
-			<div class="row">
-				<div class="col"><button id="signIn" class="btn btn-secondary" id="signIn">Sign In</button></div>
-			</div>
-		</div>
+				if($myrow=$res->fetch_object()){
+					do {
+						printf("<option value='%s'>%s</option>",$myrow->id, $myrow->dogName);
+					} while($myrow=$res->fetch_object());
+				}
+			?>
+			</select></p>
+
+	<div class="table">
+	<div class="row">
+	<div class="col para">Vaccination:
+	<select name="shotType"><option selected>Select One</option>
+	<option>CDV</option>
+	<option>CAV-1</option>
+	<option>CAV-2</option>
+	<option>CPV-2</option>
+	<option></option>
+	<option></option>
+	</select></div>
+	<div class="col para">Date Given:<input class="form-control" type="date" name="shotDate" value="<?php echo $shotDate; ?>"></div>
+	</div>
+	<div class="row">
+			<div style="padding-top:12px;" class="col-md-12 center"><input style="background:#dfece7;" class="form-control" type="submit" name="submit2" value="Submit"></div>
 	</div>
 	</form>
-</div>
-</div>
-</div>
-<!--BOOTSTRAP4 COMPONENTS NEED THIS PLACED RIGHT ABOVE CLOSING BODY TAG-->
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+	</div>
 
+</div>
 </body>
 </html>
